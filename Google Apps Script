@@ -1,0 +1,12 @@
+function fetchWeeklySnapshot() {
+  var scriptProperties = PropertiesService.getScriptProperties();
+  
+  var dbUrl = scriptProperties.getProperty('DB_URL');  
+  var user = scriptProperties.getProperty('DB_USER');  
+  var userPwd = scriptProperties.getProperty('DB_PASS'); 
+
+  var conn = Jdbc.getConnection(dbUrl, user, userPwd);
+  var stmt = conn.createStatement();
+  var sql = `...`; // Your SQL code here
+  // Rest of the script that processes and appends data to the Google Sheet
+}
