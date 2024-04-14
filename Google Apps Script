@@ -1,25 +1,20 @@
-function fetchWeeklySnapshot() {
+function fetchIndividualMembersSnapshot() {
   var scriptProperties = PropertiesService.getScriptProperties();
   
-  // Retrieves the database connection details from the script properties
-  var dbUrl = scriptProperties.getProperty('DB_URL');  
-  var user = scriptProperties.getProperty('DB_USER');  
-  var userPwd = scriptProperties.getProperty('DB_PASS'); 
+  var dbUrl = scriptProperties.getProperty('DB_URL');
+  var user = scriptProperties.getProperty('DB_USER');
+  var userPwd = scriptProperties.getProperty('DB_PASS');
 
   var conn = Jdbc.getConnection(dbUrl, user, userPwd);
   var stmt = conn.createStatement();
-
   var sql = `
     SELECT 
         CURRENT_DATE() AS snapshot_date,
+        salesforce_id,
         IFNULL(engagement_status, 'NULL') AS engagement_status,
-        IFNULL(ladder_engagement, 'NULL') AS ladder_engagement,
-        COUNT(*) AS count
+        IFNULL(ladder_engagement, 'NULL') AS ladder_engagement
     FROM 
-        salesforce_contacts
-    GROUP BY 
-        engagement_status, 
-        ladder_engagement;
+        salesforce_contacts;
   `;
 
   var results = stmt.executeQuery(sql);
@@ -28,9 +23,9 @@ function fetchWeeklySnapshot() {
   while (results.next()) {
     data.push([
       results.getString('snapshot_date'), 
-      results.getString('engagement_status'),
-      results.getString('ladder_engagement'), 
-      results.getInt('count')
+      results.getString('salesforce_id'), 
+      results.getString('engagement_status'), 
+      results.getString('ladder_engagement')
     ]);
   }
 
@@ -43,3 +38,4 @@ function fetchWeeklySnapshot() {
   stmt.close();
   conn.close();
 }
+
