@@ -1,10 +1,8 @@
 SELECT 
     CURRENT_DATE() AS snapshot_date,
+    salesforce_id,
     IFNULL(engagement_status, 'NULL') AS engagement_status,
-    IFNULL(ladder_engagement, 'NULL') AS ladder_engagement,
-    COUNT(*) AS count
+    IFNULL(ladder_engagement, 'NULL') AS ladder_engagement
 FROM 
-    leeds_new.salesforce_contacts
-GROUP BY 
-    engagement_status, 
-    ladder_engagement;
+    leeds_new.salesforce_contacts;
+
