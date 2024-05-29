@@ -1,6 +1,5 @@
 function fetchIndividualMembersSnapshot() {
   var scriptProperties = PropertiesService.getScriptProperties();
-  
   var dbUrl = scriptProperties.getProperty('DB_URL');
   var user = scriptProperties.getProperty('DB_USER');
   var userPwd = scriptProperties.getProperty('DB_PASS');
@@ -18,7 +17,8 @@ function fetchIndividualMembersSnapshot() {
   `;
 
   var results = stmt.executeQuery(sql);
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = spreadsheet.getActiveSheet();
   var data = [];
   while (results.next()) {
     data.push([
@@ -29,11 +29,21 @@ function fetchIndividualMembersSnapshot() {
     ]);
   }
 
+  // Calculate and log current cell count
+  var totalCells = spreadsheet.getSheets().reduce(function(acc, sheet) {
+    return acc + (sheet.getMaxRows() * sheet.getMaxColumns());
+  }, 0);
+  Logger.log('Total cells in workbook: ' + totalCells);
+
   if (data.length > 0) {
     var startRow = sheet.getLastRow() + 1;
     var range = sheet.getRange(startRow, 1, data.length, 4);
     range.setValues(data);
   }
+  
+  stmt.close();
+  conn.close();
+}
   
   stmt.close();
   conn.close();
