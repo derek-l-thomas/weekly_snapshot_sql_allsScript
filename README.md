@@ -27,3 +27,6 @@ Populates Google Sheet automatically every Sunday night with the latest data fro
 1 - Go back to the script editor and click on the clock icon (⏰) to open the triggers page.
 2 - Click '+ Add Trigger' and configure it to run the fetchWeeklySnapshot function, time-driven, once a week, every Sunday, between 11 PM and midnight.
 
+**NOTE:**
+-- Google Sheets has a max of 10m cells (including empty cells) and script will fail if it runs over. For this Google Sheet, I deleted all columns to the right of the last column
+
