@@ -28,5 +28,8 @@ Populates Google Sheet automatically every Sunday night with the latest data fro
 2 - Click '+ Add Trigger' and configure it to run the fetchWeeklySnapshot function, time-driven, once a week, every Sunday, between 11 PM and midnight.
 
 **NOTE:**
+-- A correct count will require removing Salesforce IDs from Weekly Snapshot Eng/Eng Status (begin 4/14)that exists in Exclusions Google Sheet (https://docs.google.com/spreadsheets/d/1HVPN2BaMfGYESUmm0iyUCcEHzjwO9SucMlStAp6raFE/edit#gid=1050377494)
+
+**NOTE:**
 -- Google Sheets has a max of 10m cells (including empty cells) and script will fail if it runs over. For this Google Sheet, I deleted all columns to the right of the last column. Script includes instructions to count the number of cells in the Google Sheet
 
